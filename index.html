@@ -10,34 +10,52 @@
     <!--STYLE-->
     <link rel="stylesheet" href="assets/styles.css" />
   </head>
-
+  <body>
+    
+ 
   <div id="app">
     <div class="product-display">
       <div class="product-container">
         <div class="product-image">
           <!--IMAGEM DO PRODUTO-->
-          <img :src="image" alt="img-product">
+          <img :src="image" alt='img-product' >
         </div>
-        <div class="product-info">
+        <div class='product-info' >
           <!--INFO DO PRODUTO-->
-          <h1>T-Shirt</h1>
-          <p>In Stock</p>
+          <h1>{{ product_title }}</h1>
+          <p v-if="inStock >= 10">In Stock</p>
+          <p v-else-if="inStock <10 && inStock >=1">Almost sold out</p>
+          <p v-else>Out of Stock</p>
+          <ul>
+            <li v-for="detail in details">
+              {{ detail }}
+
+            </li>
+          </ul>
+          <div v-for="variant in variants">
+            {{variant.color}}
+          </div>
         </div>
       </div>
     </div>
+  </div>
 
     <script>
       const { createApp, ref } = Vue;
 
-      CreateApp({
+      createApp({
         setup() {
-          const message = ref("Hello Vue!");
+         
+
           return {
-            message,
-            image: ref("assets/images/t-shirt-blue.png"),
+            product_title: ref('T-shirt'),
+            image: ref("assets/images/mine.jpg"),
+            inStock: ref(1),
+            details: ['50% Cotton', '30% Polyester', '20%Woll' ],
+            variants: [{id:1, color:'blue'}, {id:2, color: 'green'}]
           };
         },
-      }).mount("#app");
+      }).mount('#app');
     </script>
-  </div>
+     </body>
 </html>
