@@ -11,51 +11,62 @@
     <link rel="stylesheet" href="assets/styles.css" />
   </head>
   <body>
-    
- 
-  <div id="app">
-    <div class="product-display">
-      <div class="product-container">
-        <div class="product-image">
-          <!--IMAGEM DO PRODUTO-->
-          <img :src="image" alt='img-product' >
-        </div>
-        <div class='product-info' >
-          <!--INFO DO PRODUTO-->
-          <h1>{{ product_title }}</h1>
-          <p v-if="inStock >= 10">In Stock</p>
-          <p v-else-if="inStock <10 && inStock >=1">Almost sold out</p>
-          <p v-else>Out of Stock</p>
-          <ul>
-            <li v-for="detail in details">
-              {{ detail }}
-
-            </li>
-          </ul>
-          <div v-for="variant in variants">
-            {{variant.color}}
+    <div id="app">
+      <div class="cart">Cart: {{ cart }}</div>
+      <div class="product-display">
+        <div class="product-container">
+          <div class="product-image">
+            <!--IMAGEM DO PRODUTO-->
+            <img :src="image" alt="img-product" />
+          </div>
+          <div class="product-info">
+            <!--INFO DO PRODUTO-->
+            <h1>{{ product_title }}</h1>
+            <p v-if="inStock >= 10">In Stock</p>
+            <p v-else-if="inStock <10 && inStock >=1">Almost sold out</p>
+            <p v-else>Out of Stock</p>
+            <ul>
+              <li v-for="detail in details">{{ detail }}</li>
+            </ul>
+            <div v-for="variant in variants" :key="variants.id" @mouseover="changeImage(variant.image)">
+              {{variant.color}}
+            </div>
+            <button class="button" @click="addToCart">Add to Cart</button>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
     <script>
       const { createApp, ref } = Vue;
 
       createApp({
         setup() {
-         
+          const cart = ref(0);
+          const addToCart = () => {
+            cart.value += 1;
+          };
+          const image = ref("assets/images/mine.jpg");
+          const changeImage = (variantImage) => {
+            image.value = variantImage;
+          };
 
           return {
-            product_title: ref('T-shirt'),
-            image: ref("assets/images/mine.jpg"),
+            product_title: ref("T-shirt"),
+            image,
             inStock: ref(1),
-            details: ['50% Cotton', '30% Polyester', '20%Woll' ],
-            variants: [{id:1, color:'blue'}, {id:2, color: 'green'}]
+            details: ["50% Cotton", "30% Polyester", "20%Woll"],
+            variants: [
+              { id: 1, color: "blue", image: "assets/images/t-shirt-blue.png" },
+              { id: 2, color: "green", image: "assets/images/t-shirt-green.png" },
+              { id: 2, color: "colored", image: "assets/images/mine.jpg" },
+            ],
+            cart,
+            addToCart,
+            changeImage,
           };
         },
-      }).mount('#app');
+      }).mount("#app");
     </script>
-     </body>
+  </body>
 </html>
