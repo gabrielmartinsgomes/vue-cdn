@@ -21,17 +21,16 @@
           </div>
           <div class="product-info">
             <!--INFO DO PRODUTO-->
-            <h1>{{ product_title }}</h1>
+            <h1>{{ product_title + ' ' + brand }}</h1>
             <p v-if="inStock >= 10">In Stock</p>
             <p v-else-if="inStock <10 && inStock >=1">Almost sold out</p>
             <p v-else>Out of Stock</p>
             <ul>
               <li v-for="detail in details">{{ detail }}</li>
             </ul>
-            <div v-for="variant in variants" :key="variants.id" @mouseover="changeImage(variant.image)">
-              {{variant.color}}
+            <div v-for="variant in variants" :key="variants.id" @mouseover="changeImage(variant.image)" class="color-circle" :style="{ backgroundColor: variant.color}">
             </div>
-            <button class="button" @click="addToCart">Add to Cart</button>
+            <button class="button" :class="{ disabledButton : inStock < 1}" @click="addToCart" :disabled="inStock < 1">Add to Cart</button>
           </div>
         </div>
       </div>
@@ -53,13 +52,15 @@
 
           return {
             product_title: ref("T-shirt"),
+            brand: 'Marconyu',
             image,
-            inStock: ref(1),
+            inStock: ref(9),
             details: ["50% Cotton", "30% Polyester", "20%Woll"],
             variants: [
               { id: 1, color: "blue", image: "assets/images/t-shirt-blue.png" },
               { id: 2, color: "green", image: "assets/images/t-shirt-green.png" },
-              { id: 2, color: "colored", image: "assets/images/mine.jpg" },
+              { id: 3, color: "minecraft", image: "assets/images/mine.jpg" },
+              { id: 4, color: "purple", image: "assets/images/chickenjockey.jpg"},
             ],
             cart,
             addToCart,
